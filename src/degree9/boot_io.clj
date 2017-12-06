@@ -5,6 +5,9 @@
   (:import (org.apache.commons.io FileUtils)))
 
 ;; Helper Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defn- exists? [item]
+  (.exists item))
+
 (defn- file? [file]
   (.isFile file))
 
@@ -19,13 +22,19 @@
 
 (defn- to-dir [source target]
   (FileUtils/copyToDirectory source target))
+
+(defn- mk-dir [dir]
+  (FileUtils/forceMkdir dir))
+
+(defn- mk-parent [file]
+  (FileUtils/forceMkdirParent file))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; IO Tasks ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (boot/deftask add-directory
   "Add directory to fileset. Contents of source directory are placed in target."
-  [s source      VAL str "Source directory used during copy."
-   d destination VAL str "Target directory relative to fileset root used during copy."]
+  [s source      VAL str  "Source directory used during copy."
+   d destination VAL str  "Target directory relative to fileset root used during copy."]
   (let [tmp (boot/tmp-dir!)
         src (:source *opts*)
         dst (:destination *opts*)
@@ -34,11 +43,11 @@
     (boot/with-pre-wrap fileset
       (when-not (and src dst)
         (util/fail "Please provide both `source` and `destination` options. \n"))
-      (when-not (and (directory? source) (directory? target))
-        (util/fail "Both source and destination must be directories. \n"))
       (util/info "Adding directory to fileset... \n")
       (util/info "• %s -> %s \n" src dst)
-      (copy-dir source target)
+      (if (.exists source)
+        (copy-dir source target)
+        (util/warn "Missing source directory: %s \n" src))
       (-> fileset (boot/add-resource tmp) boot/commit!))))
 
 (boot/deftask add-file
@@ -53,8 +62,6 @@
     (boot/with-pre-wrap fileset
       (when-not (and src dst)
         (util/fail "Please provide both `source` and `destination` options. \n"))
-      (when-not (and (file? source) (file? target))
-        (util/fail "Both source and destination must be files. \n"))
       (util/info "Adding file to fileset... \n")
       (util/info "• %s -> %s \n" src dst)
       (copy-file source target)
@@ -72,8 +79,6 @@
     (boot/with-pre-wrap fileset
       (when-not (and src dst)
         (util/fail "Please provide both `source` and `destination` options. \n"))
-      (when (file? target)
-        (util/fail "Destination must be a directory. \n"))
       (util/info "Adding items to fileset... \n")
       (util/info "• %s -> %s \n" src dst)
       (to-dir source target)
