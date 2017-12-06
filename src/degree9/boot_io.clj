@@ -33,8 +33,8 @@
 ;; IO Tasks ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (boot/deftask add-directory
   "Add directory to fileset. Contents of source directory are placed in target."
-  [s source      VAL str "Source directory used during copy."
-   d destination VAL str "Target directory relative to fileset root used during copy."]
+  [s source      VAL str  "Source directory used during copy."
+   d destination VAL str  "Target directory relative to fileset root used during copy."]
   (let [tmp (boot/tmp-dir!)
         src (:source *opts*)
         dst (:destination *opts*)
@@ -45,7 +45,9 @@
         (util/fail "Please provide both `source` and `destination` options. \n"))
       (util/info "Adding directory to fileset... \n")
       (util/info "• %s -> %s \n" src dst)
-      (copy-dir source target)
+      (if (.exists source)
+        (copy-dir source target)
+        (util/warn "Missing source directory: %s \n" src))
       (-> fileset (boot/add-resource tmp) boot/commit!))))
 
 (boot/deftask add-file
