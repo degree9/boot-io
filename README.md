@@ -7,6 +7,18 @@
 
 Boot-clj IO functionality using Apache Commons IO.
 
+---
+
+<p align="center">
+  <a href="https://degree9.io" align="center">
+    <img width="135" src="http://degree9.io/images/degree9.png">
+  </a>
+  <br>
+  <b>boot-io is developed and maintained by Degree9</b>
+</p>
+
+---
+
 IO Tasks for [boot-clj][1].
 
 * Provides `add-file` task for adding files to the fileset.
