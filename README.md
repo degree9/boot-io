@@ -1,8 +1,6 @@
 # boot-io
-[![Clojars Project](https://img.shields.io/clojars/v/degree9/boot-io.svg)](https://clojars.org/degree9/boot-io)
-<!--- [![Dependencies Status](https://jarkeeper.com/degree9/boot-io/status.svg)](https://jarkeeper.com/degree9/boot-io)
-[![Downloads](https://jarkeeper.com/degree9/boot-io/downloads.svg)](https://jarkeeper.com/degree9/boot-io)
-[![CircleCI](https://circleci.com/gh/degree9/boot-io.svg?style=svg)](https://circleci.com/gh/degree9/boot-io)
+[![Clojars Project](https://img.shields.io/clojars/v/degree9/boot-io.svg)](https://clojars.org/degree9/boot-io)<!--- [![Dependencies Status](https://versions.deps.co/degree9/boot-io/status.svg)](https://versions.deps.co/degree9/boot-io)--> [![Downloads](https://versions.deps.co/degree9/boot-io/downloads.svg)](https://versions.deps.co/degree9/boot-io)
+<!--[![CircleCI](https://circleci.com/gh/degree9/boot-io.svg?style=svg)](https://circleci.com/gh/degree9/boot-io)
 [![gitcheese.com](https://api.gitcheese.com/v1/projects/95880215-d9f4-4604-9e9e-565efdbef0f4/badges?type=1&size=xs)](https://www.gitcheese.com/app/#/projects/95880215-d9f4-4604-9e9e-565efdbef0f4/pledges/create) --->
 
 Boot-clj IO functionality using Apache Commons IO.
