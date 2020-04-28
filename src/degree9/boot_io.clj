@@ -1,35 +1,9 @@
 (ns degree9.boot-io
   (:require [boot.core :as boot]
             [boot.util :as util]
-            [clojure.java.io :as io])
-  (:import (org.apache.commons.io FileUtils)
-           (java.io FileNotFoundException)))
-
-;; Helper Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defn- exists? [item]
-  (.exists item))
-
-(defn- file? [file]
-  (.isFile file))
-
-(defn- directory? [dir]
-  (.isDirectory dir))
-
-(defn- copy-file [source target]
-  (FileUtils/copyFile source target))
-
-(defn- copy-dir [source target]
-  (FileUtils/copyDirectory source target))
-
-(defn- to-dir [source target]
-  (FileUtils/copyToDirectory source target))
-
-(defn- mk-dir [dir]
-  (FileUtils/forceMkdir dir))
-
-(defn- mk-parent [file]
-  (FileUtils/forceMkdirParent file))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+            [clojure.java.io :as io]
+            [degree9.boot-io.filesystem :as fs])
+  (:import (java.io FileNotFoundException)))
 
 ;; IO Tasks ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (boot/deftask add-directory
@@ -47,7 +21,7 @@
         (util/fail "Please provide both `source` and `destination` options. \n"))
       (util/info "Adding directory to fileset... \n")
       (util/info "• %s -> %s \n" src dst)
-      (try (copy-dir source target)
+      (try (fs/copy-dir source target)
         (catch FileNotFoundException npe (when-not optional npe)))
       (-> fileset (boot/add-resource tmp) boot/commit!))))
 
@@ -67,7 +41,7 @@
         (util/fail "Please provide both `source` and `destination` options. \n"))
       (util/info "Adding file to fileset... \n")
       (util/info "• %s -> %s \n" src dst)
-      (try (copy-file source target)
+      (try (fs/copy-file source target)
         (catch FileNotFoundException npe (when-not optional npe)))
       (-> fileset (boot/add-resource tmp) boot/commit!))))
 
@@ -86,7 +60,7 @@
         (util/fail "Please provide both `source` and `destination` options. \n"))
       (util/info "Adding items to fileset... \n")
       (util/info "• %s -> %s \n" src dst)
-      (try (to-dir source target)
+      (try (fs/to-dir source target)
         (catch FileNotFoundException npe (when-not optional npe)))
       (-> fileset (boot/add-resource tmp) boot/commit!))))
 

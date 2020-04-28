@@ -1,8 +1,7 @@
 (set-env!
-  :dependencies  '[[org.clojure/clojure                 "1.8.0"]
-                   [boot/core                           "2.7.2"]
+  :dependencies  '[[boot/core                           "2.8.2"]
                    [commons-io                          "2.6"]
-                   [degree9/boot-semver                 "1.7.0" :scope "test"]]
+                   [degree9/boot-semver                 "1.8.0" :scope "test"]]
   :resource-paths   #{"src"})
 
 (require '[degree9.boot-semver :refer :all])
